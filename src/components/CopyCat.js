@@ -1,43 +1,39 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { styles } from '../styles';
+import PropTypes from 'prop-types';
 
 const images = {
   copycat: 'https://content.codecademy.com/courses/React/react_photo_copycat.png',
   quietcat: 'https://content.codecademy.com/courses/React/react_photo_quietcat.png'
 };
 
-
-class CopyCat extends React.Component {
-    constructor(props) {
-    super(props);
-
-    this.state = { 
-      copying: true
-    };
-
-    this.toggleTape = this.toggleTape.bind(this);
-  }
-
-  toggleTape() {
-    this.setState({copying: !this.state.copying})
-  }
-  
+export class CopyCat extends React.Component {
   render() {
-    const copying = this.state.copying;
-    const toggleTape = this.toggleTape
-    
+    const {copying, toggleTape, value, handleChange, name} = this.props;
     return (
-      <div>
-        <h1>Copy Cat</h1>
+      <div style={styles.divStyles}>
+        <h1 style={{marginBottom: 80}}>Copy Cat {name || 'Tom'}</h1>
+        <input 
+          value={value}
+          type='text'
+          onChange={handleChange}
+        />
         <img 
+          style={styles.imgStyles}
           alt='cat'
           src={copying ? images.copycat : images.quietcat}
           onClick={toggleTape}
         />
+        <p>{copying && value}</p>
       </div>
     );
   };
 }
 
-
-ReactDOM.render(<CopyCat />, document.getElementById('app'));
+CopyCat.propTypes = {
+  copying: PropTypes.bool.isRequired,
+  toggleTape: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  name: PropTypes.string
+};
